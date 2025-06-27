@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './GithubSearch.css';
-import { FaMapMarkerAlt } from 'react-icons/fa'; // FaInstagram was removed in previous code blocks
+import { FaMapMarkerAlt } from 'react-icons/fa'; 
 import { PiBuildingsFill } from 'react-icons/pi';
 import { FaXTwitter } from 'react-icons/fa6';
 import { FaGithub } from 'react-icons/fa';
@@ -10,17 +10,13 @@ const GithubSearch = () => {
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
 
-    // Determines which environment variable to use based on the build tool (CRA vs Vite)
-    // For Create React App (CRA):
     const NODE_API_URL = process.env.REACT_APP_NODE_API_URL;
-    // For Vite (if you're using Vite instead of CRA, uncomment the line below and comment the one above):
-    // const NODE_API_URL = import.meta.env.VITE_NODE_API_URL;
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null); // Clear previous errors
-        setProfile(null); // Clear previous profile
+        setError(null); 
+        setProfile(null); 
 
         if (!username.trim()) {
             setError('Please enter a GitHub username.');
@@ -28,9 +24,9 @@ const GithubSearch = () => {
         }
 
         if (!NODE_API_URL) {
-            // This check ensures the environment variable is loaded correctly
+            
             setError('API URL is not configured. Please check your environment variables.');
-            // Console log will differ based on CRA or Vite
+            
             console.error(
                 `REACT_APP_NODE_API_URL (or VITE_NODE_API_URL) is not defined!
                 Ensure your .env file is in the root of your React project
@@ -40,22 +36,19 @@ const GithubSearch = () => {
         }
 
         try {
-            // FIX APPLIED HERE:
-            // The URL string has been corrected to use standard JavaScript template literals.
-            // Removed the incorrect `<span>`, `\{`, `\-` characters.
+            
             const response = await fetch(`${NODE_API_URL}/api/github-user/${username}`);
 
             if (!response.ok) {
-                // If the response from Node.js is not OK, try to parse its error message
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'An error occurred fetching user data.');
             }
             const data = await response.json();
             setProfile(data);
-            setError(null); // Clear error if successful
+            setError(null); 
         } catch (error) {
             setProfile(null);
-            setError(error.message); // Set error message from the caught error
+            setError(error.message); 
             console.error('Fetch error:', error);
         }
     };
@@ -84,7 +77,7 @@ const GithubSearch = () => {
                         <div className='profile-details'>
 
                             <div className='profile-des'>
-                                <h2 className='profile-name'>{profile.name || profile.login}</h2> {/* Use login if name is null */}
+                                <h2 className='profile-name'>{profile.name || profile.login}</h2> 
                                 <p className='profile-created'>Joined: {new Date(profile.created_at).toLocaleDateString()}</p>
                             </div>
 
@@ -108,7 +101,7 @@ const GithubSearch = () => {
                                 </a>
                                 <a href={profile.html_url} target='_blank' rel="noreferrer" className='profile-url'><FaGithub />View Profile</a>
                             </div>
-                            {/* Removed Instagram link as it's not directly supported by GitHub API response without additional logic */}
+                            
                         </div>
                     </div>
                 </div>
